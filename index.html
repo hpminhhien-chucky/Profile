@@ -1,569 +1,847 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hiển Phạm — Profile </title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --ink: #1a1a18;
-    --ink-2: #555550;
-    --ink-3: #999990;
-    --paper: #f7f5f0;
-    --accent: #c8502a;
-    --line: #e2dfd8;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--paper);
-    color: var(--ink);
-    font-size: 16px;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 20px 60px;
-    background: var(--paper);
-    border-bottom: 1px solid var(--line);
-    animation: fadeDown .6s ease both;
-  }
-  .nav-logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 20px; letter-spacing: -.3px;
-  }
-  .nav-links { display: flex; gap: 32px; list-style: none; }
-  .nav-links a {
-    font-size: 13px; font-weight: 500; letter-spacing: .04em;
-    text-transform: uppercase; color: var(--ink-2);
-    text-decoration: none; transition: color .2s;
-  }
-  .nav-links a:hover { color: var(--accent); }
-
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding-top: 80px;
-  }
-  .hero-left {
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 80px 60px 80px 60px;
-    animation: fadeUp .8s .1s ease both;
-  }
-  .hero-tag {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 12px; font-weight: 500; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--accent);
-    margin-bottom: 24px;
-  }
-  .hero-tag::before {
-    content: ''; display: block; width: 24px; height: 1px;
-    background: var(--accent);
-  }
-  .hero-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(48px, 5vw, 72px);
-    line-height: 1.05; letter-spacing: -.02em;
-    margin-bottom: 8px;
-  }
-  .hero-name em {
-    font-style: italic; color: var(--accent);
-  }
-  .hero-title {
-    font-size: 18px; font-weight: 300; color: var(--ink-2);
-    margin-bottom: 32px;
-  }
-  .hero-desc {
-    font-size: 15px; color: var(--ink-2); line-height: 1.8;
-    max-width: 400px; margin-bottom: 40px;
-  }
-  .hero-actions { display: flex; gap: 16px; align-items: center; }
-  .btn-primary {
-    background: var(--ink); color: var(--paper);
-    padding: 13px 28px; border: none; border-radius: 2px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px; font-weight: 500; letter-spacing: .04em;
-    text-transform: uppercase; cursor: pointer; text-decoration: none;
-    transition: background .2s, transform .15s;
-    display: inline-block;
-  }
-  .btn-primary:hover { background: var(--accent); transform: translateY(-1px); }
-  .btn-ghost {
-    font-size: 13px; font-weight: 500; letter-spacing: .04em;
-    text-transform: uppercase; color: var(--ink-2);
-    text-decoration: none; border-bottom: 1px solid var(--line);
-    padding-bottom: 2px; transition: color .2s, border-color .2s;
-  }
-  .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
-
-  .hero-right {
-    position: relative; overflow: hidden;
-    background: var(--ink);
-    animation: fadeIn .8s .3s ease both;
-  }
-  .hero-img-placeholder {
-    width: 100%; height: 100%;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 12px; color: #444;
-    background: repeating-linear-gradient(
-      45deg, #1f1f1c 0, #1f1f1c 1px, #1a1a18 1px, #1a1a18 16px
-    );
-  }
-  .avatar-circle {
-    width: 120px; height: 120px; border-radius: 50%;
-    background: #333; border: 2px solid #444;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'DM Serif Display', serif;
-    font-size: 40px; color: #888;
-  }
-  .hero-img-label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #555; }
-
-  .hero-stats {
-    position: absolute; bottom: 40px; left: 40px; right: 40px;
-    display: flex; gap: 32px;
-  }
-  .stat { text-align: center; }
-  .stat-num {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px; color: var(--paper);
-    display: block; line-height: 1;
-  }
-  .stat-label { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #888; margin-top: 4px; display: block; }
-
-  /* ── ABOUT ── */
-  section { padding: 100px 60px; }
-  .section-header {
-    display: flex; align-items: center; gap: 16px;
-    margin-bottom: 60px;
-  }
-  .section-num {
-    font-size: 11px; font-weight: 500; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--ink-3);
-  }
-  .section-line { flex: 1; height: 1px; background: var(--line); }
-  .section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(28px, 3vw, 40px); letter-spacing: -.02em;
-  }
-
-  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-  .about-text p { font-size: 15px; color: var(--ink-2); line-height: 1.9; margin-bottom: 16px; }
-  .about-details { display: flex; flex-direction: column; gap: 0; }
-  .detail-row {
-    display: flex; justify-content: space-between; align-items: baseline;
-    padding: 14px 0; border-bottom: 1px solid var(--line);
-  }
-  .detail-label { font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
-  .detail-val { font-size: 14px; color: var(--ink); }
-
-  /* ── SKILLS ── */
-  #ky-nang { background: var(--ink); color: var(--paper); }
-  #ky-nang .section-num { color: #666; }
-  #ky-nang .section-line { background: #333; }
-  #ky-nang .section-title { color: var(--paper); }
-
-  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-  .skill-card {
-    background: #222; padding: 32px 28px;
-    transition: background .2s;
-    cursor: default;
-  }
-  .skill-card:hover { background: #2a2a28; }
-  .skill-icon {
-    font-size: 28px; margin-bottom: 16px; display: block;
-  }
-  .skill-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: 20px; color: var(--paper); margin-bottom: 8px;
-  }
-  .skill-desc { font-size: 13px; color: #888; line-height: 1.7; margin-bottom: 16px; }
-  .skill-bar { height: 2px; background: #333; margin-top: 16px; }
-  .skill-fill { height: 100%; background: var(--accent); transition: width 1s ease; }
-  .skill-pct { font-size: 11px; color: #666; margin-top: 6px; letter-spacing: .06em; }
-
-  /* ── PROJECTS ── */
-  .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
-  .project-card {
-    background: white; padding: 40px 36px;
-    border: 1px solid var(--line);
-    transition: border-color .2s, transform .2s;
-    cursor: pointer;
-  }
-  .project-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .project-num { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; display: block; }
-  .project-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px; margin-bottom: 12px; letter-spacing: -.01em;
-  }
-  .project-desc { font-size: 14px; color: var(--ink-2); line-height: 1.7; margin-bottom: 20px; }
-  .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-  .tag {
-    font-size: 11px; font-weight: 500; letter-spacing: .06em;
-    text-transform: uppercase; color: var(--ink-3);
-    border: 1px solid var(--line); padding: 4px 10px;
-    border-radius: 1px;
-  }
-
-  /* ── CONTACT ── */
-  #lien-he { background: var(--accent); color: white; }
-  #lien-he .section-num { color: rgba(255,255,255,.5); }
-  #lien-he .section-line { background: rgba(255,255,255,.3); }
-  #lien-he .section-title { color: white; }
-
-  .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-  .contact-tagline {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(24px, 2.5vw, 36px); font-style: italic;
-    line-height: 1.3; color: white; opacity: .9;
-  }
-  .contact-form { display: flex; flex-direction: column; gap: 16px; }
-  .form-group { display: flex; flex-direction: column; gap: 6px; }
-  .form-label { font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.7); }
-  .form-input, .form-textarea {
-    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
-    color: white; padding: 12px 14px; font-family: 'DM Sans', sans-serif;
-    font-size: 14px; border-radius: 2px; transition: border-color .2s;
-    outline: none;
-  }
-  .form-input::placeholder, .form-textarea::placeholder { color: rgba(255,255,255,.4); }
-  .form-input:focus, .form-textarea:focus { border-color: rgba(255,255,255,.6); }
-  .form-textarea { min-height: 100px; resize: vertical; }
-  .btn-send {
-    background: white; color: var(--accent);
-    padding: 14px 32px; border: none; border-radius: 2px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px; font-weight: 500; letter-spacing: .06em;
-    text-transform: uppercase; cursor: pointer;
-    align-self: flex-start; transition: opacity .2s, transform .15s;
-  }
-  .btn-send:hover { opacity: .9; transform: translateY(-1px); }
-
-  /* ── FOOTER ── */
-  footer {
-    padding: 32px 60px;
-    display: flex; justify-content: space-between; align-items: center;
-    border-top: 1px solid var(--line);
-    font-size: 13px; color: var(--ink-3);
-  }
-  .footer-links { display: flex; gap: 24px; }
-  .footer-links a { color: var(--ink-3); text-decoration: none; transition: color .2s; }
-  .footer-links a:hover { color: var(--accent); }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeDown { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:none; } }
-  @keyframes fadeUp   { from { opacity:0; transform:translateY(20px);  } to { opacity:1; transform:none; } }
-  @keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
-
-  .reveal {
-    opacity: 0; transform: translateY(24px);
-    transition: opacity .7s ease, transform .7s ease;
-  }
-  .reveal.visible { opacity: 1; transform: none; }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 768px) {
-    nav { padding: 16px 24px; }
-    .nav-links { display: none; }
-    .hero { grid-template-columns: 1fr; }
-    .hero-left { padding: 60px 24px; }
-    .hero-right { min-height: 300px; }
-    section { padding: 60px 24px; }
-    .about-grid, .contact-layout { grid-template-columns: 1fr; gap: 40px; }
-    .skills-grid { grid-template-columns: 1fr; }
-    .projects-grid { grid-template-columns: 1fr; }
-    footer { flex-direction: column; gap: 16px; text-align: center; }
-  }
 </style>
-</head>
+<link rel="stylesheet" href="style.css">
+</head> 
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">Hiển Phạm</div>
+<!-- CURSOR -->
+<div class="cursor-dot" id="cDot"></div>
+<div class="cursor-ring" id="cRing"></div>
+
+<!-- ======================================================
+     NAVIGATION
+     ====================================================== -->
+<nav class="nav" id="navbar">
+  <div class="nav-logo">
+    <div class="nav-logo">
+    <img src="images/logo.png" alt="PMH Logo" class="logo-img">
+</div>
+  </div>
   <ul class="nav-links">
-    <li><a href="#gioi-thieu">Giới thiệu</a></li>
-    <li><a href="#ky-nang">Kỹ năng</a></li>
-    <li><a href="#du-an">Dự án</a></li>
-    <li><a href="#lien-he">Liên hệ</a></li>
+    <li><a href="#hero">HOME</a></li>
+    <li><a href="#skills">SKILLS</a></li>
+    <li><a href="#projects">PROJECTS</a></li>
+    <li><a href="#education">EDUCATION</a></li>
+    <li><a href="#passions">PASSIONS</a></li>
+    <li><a href="#contact">CONTACT</a></li>
   </ul>
+  <a href="#contact" class="nav-cta">Let's Talk</a>
 </nav>
 
-<!-- HERO -->
-<section class="hero" style="padding:0;">
+<!-- ======================================================
+     PAGE 1 — HERO
+     ====================================================== -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-particles" id="particles"></div>
+  </div>
+
+  <!-- LEFT -->
   <div class="hero-left">
-    <span class="hero-tag">Personal information</span>
-    <h1 class="hero-name">Phạm <em>Minh Hiển</em></h1>
-    <p class="hero-title">Quản lý dự án - Hồ Chí Minh</p>
-    <p class="hero-desc">
-      Tôi là một kỹ sư chuyên ngành công nghệ thông tin, tôi có hơn 07 năm kinh nghiệm hoạt động trong lĩnh vực cung cấp giải pháp cho giáo dục CĐ - ĐH.
-      Trong đó tôi có hơn 04 năm đảm nhiệm vai trò chuyên viên tư vấn giải pháp và quản lý dự án
-    </p>
-    <div class="hero-actions">
-      <a class="btn-ghost">Tư vấn giải pháp</a>
-      <a class="btn-ghost">Triển khai hệ thống</a>
-      <a class="btn-ghost">Quản lý dự án</a>
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Available for Collaboration
+    </div>
+
+    <h1 class="hero-name">
+      Phạm Minh<br>
+      <span class="name-blue">Hiển</span>
+    </h1>
+    <p class="hero-title">Project Manager &amp; Solution Consultant</p>
+    <div class="hero-divider"></div>
+
+    <blockquote class="hero-quote">
+      "Technology is not only about systems — it is about creating sustainable value for people and organizations."
+    </blockquote>
+
+    <p class="hero-bio">
+      Xin chào, Tôi hiện là một EdTech Specialist có 8 năm kinh nghiệm hoạt động trong lĩnh vực giáo dục, 
+      Trong đó Tôi có 4 năm giữ vai trò tư vấn giải pháp và quản lý chuyển giao công nghệ số
+      hệ thống phần mềm quản lý cho các trường cao đẳng và đại học trên khắp Việt Nam.
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">↓ My Information</a>
+      <a href="#contact" class="btn-ghost">✉ Contact Me</a>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-val">8+</div>
+        <div class="hero-stat-lbl">Years Experience</div>
+      </div>
+      <div>
+        <div class="hero-stat-val">100%</div>
+        <div class="hero-stat-lbl">Project Success Rate</div>
+      </div>
+      <div>
+        <div class="hero-stat-val">30B+</div>
+        <div class="hero-stat-lbl">VND Business Value</div>
+      </div>
     </div>
   </div>
-<div class="hero-right">
-    <div class="hero-img-placeholder" style="border-radius: 0; background: none;">
-        <img src="Profile1.jpg" alt="Ảnh của tôi" style="width: 100%; height: auto; display: block; object-fit: contain;">
-    </div> 
-</div>
+
+  <!-- RIGHT — AVATAR -->
+  <div class="hero-right">
+    <div class="avatar-container">
+      <div class="avatar-ring-outer"></div>
+      <div class="avatar-ring-inner"></div>
+      
+        <div class="avatar-tech-bg"></div>
+        <div id="avatarContent">
+          <div class="avatar-placeholder">
+            <div class="profile-image">
+              <img src="images/hien01.png" alt="Phạm Minh Hiển">
+          </div>
+        </div>
+      </div>
+      <div class="avatar-badge ab-top-right">
+        <div class="ab-label">Experience</div>
+        <div class="ab-value">8+ Years</div>
+      </div>
+      <div class="avatar-badge ab-bottom-left">
+        <div class="ab-label">Projects</div>
+        <div class="ab-value">10+ </div>
+      </div>
+      <div class="avatar-badge ab-top-left">
+        <div class="ab-label">Complete</div>
+        <div class="ab-value">100% </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- ABOUT -->
-<section id="gioi-thieu">
-  <div class="section-header reveal">
-    <span class="section-num">01</span>
-    <div class="section-line"></div>
-    <h2 class="section-title">Giới thiệu</h1>
-  </div>
-  <div class="about-grid">
-    <div class="about-text reveal">
-      <p>
-        Xin chào! Tôi là <strong>Phạm Minh Hiển</strong>, 
-        ngoài công việc chuyên môn là tư vấn giải pháp và quản lý dự án
-        trong cuộc sống thường ngày Tôi duy trì lối sống thể thao song song với công việc. 
-        Thể thao giúp tôi rèn luyện khả năng chịu áp lực, kỷ luật bản thân và tinh thần không bỏ cuộc, 
-        những phẩm chất cốt lõi tôi xem là nền tảng để làm việc hiệu quả trong môi trường có cường độ cao.
-      </p>
-      <p>
-        Ngoài thể thao, tôi cũng khá thoải mái trong các buổi tiệc giao lưu, gặp gỡ đối tác. 
-        Điều này giúp tôi dễ tạo sự kết nối, trao đổi cởi mở và xây dựng quan hệ công việc tích cực phù hợp đối với đặc thù vị trí công việc quản lý dự án
-      </p>
-      <p>
-        Rất vui được kết nối và mong rằng chúng ta sẽ có cơ hội hợp tác và đồng hành trong những chặng đường sắp tới
-      </p>
-    </div>
-    <div class="about-details reveal">
-      <div class="detail-row">
-        <span class="detail-label">Tên</span>
-        <span class="detail-val">Phạm Minh Hiển</span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Email</span>
-        <span class="detail-val">hpminhhien@gmail.com</span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Địa chỉ</span>
-        <span class="detail-val">Hồ Chí Minh, Việt Nam</span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Học vấn</span>
-        <span class="detail-val">Đại học</span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Ngôn ngữ</span>
-        <span class="detail-val">Tiếng Việt, Tiếng Anh</span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Trạng thái</span>
-        <span class="detail-val" style="color:#c8502a;font-weight:500;">Sẵn sàng cho cơ hội mới</span>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- SKILLS -->
-<section id="ky-nang">
-  <div class="section-header reveal">
-    <span class="section-num">02</span>
-    <div class="section-line"></div>
-    <h2 class="section-title">Kỹ năng</h2>
+
+<!-- ======================================================
+     PAGE 2 — SKILLS
+     ====================================================== -->
+<section id="skills" class="section">
+  <div class="section-header sr">
+    <div class="section-label">Core Competencies</div>
+    <h2 class="section-title">Abilities &amp; <span class="accent">Professional Skills</span></h2>
+    <p class="section-subtitle">"Bộ kỹ năng được định hình và rèn luyện không chỉ từ việc trau dồi học tập mà còn là hành trình dài thực chiến cùng các dự án quy mô lớn"</p>
   </div>
+
   <div class="skills-grid">
-    <div class="skill-card reveal">
-      <span class="skill-icon"> </span>
-      <h3 class="skill-name">Project Management</h3>
-      <p class="skill-desc">Lập kế hoạch, điều phối và quản lý tiến độ dự án nhằm đảm bảo mục tiêu, chất lượng và thời gian triển khai.</p>
-      <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
-      <span class="skill-pct">90%</span>
+    <div class="skill-card sr sd1" data-level="92">
+      <div class="skill-icon-wrap">📋</div>
+      <div class="skill-name">Project Management</div>
+      <div class="skill-desc">Làm chủ vòng đời dự án, kết nối nguồn lực đa bên và điều phối linh hoạt để hiện thực hóa các giải pháp chuyển đổi số phức tạp đúng cam kết.</div>
+      <div class="skill-level-bar"><div class="skill-level-fill"></div></div>
+      <div class="skill-level-label"><span>Project Delivery</span><span class="pct">92%</span></div>
     </div>
-    <div class="skill-card reveal">
-      <span class="skill-icon"></span>
-      <h3 class="skill-name">Solution Consulting</h3>
-      <p class="skill-desc">Nghiên cứu nghiệp vụ, phân tích yêu cầu. 
-        Tư vấn và đề xuất giải pháp phù hợp dựa trên nhu cầu và bài toán thực tế của khách hàng</p>
-      <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
-      <span class="skill-pct">80%</span>
+
+    <div class="skill-card sr sd2" data-level="88">
+      <div class="skill-icon-wrap">💡</div>
+      <div class="skill-name">Solution Consulting</div>
+      <div class="skill-desc">Thấu hiểu toàn diện bài toán quản trị giáo dục, chuyển hóa nhu cầu thực tế thành cấu trúc giải pháp số tối ưu, Tư vấn thực hiện bám sát lộ trình vận hành của nhà trường.</div>
+      <div class="skill-level-bar"><div class="skill-level-fill"></div></div>
+      <div class="skill-level-label"><span>Consulting Depth</span><span class="pct">88%</span></div>
     </div>
-    <div class="skill-card reveal">
-      <span class="skill-icon"></span>
-      <h3 class="skill-name">System Implementation</h3>
-      <p class="skill-desc">Tổ chức triển khai hệ thống, phối hợp các bên liên quan và đảm bảo quá trình vận hành ổn định, hiệu quả sau golive</p>
-      <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
-      <span class="skill-pct">85%</span>
+
+    <div class="skill-card sr sd3" data-level="90">
+      <div class="skill-icon-wrap">🎓</div>
+      <div class="skill-name">Technology Transfer</div>
+      <div class="skill-desc">Tối ưu hóa trải nghiệm tiếp cận công nghệ; xây dựng lộ trình chuyển giao chuẩn hóa giúp nhân sự nhà trường nhanh chóng làm chủ và khai thác triệt để giá trị hệ thống.</div>
+      <div class="skill-level-bar"><div class="skill-level-fill"></div></div>
+      <div class="skill-level-label"><span>EdTech Mastery</span><span class="pct">90%</span></div>
     </div>
-    <div class="skill-card reveal">
-      <span class="skill-icon"></span>
-      <h3 class="skill-name">Problem Solving</h3>
-      <p class="skill-desc">Chủ động nhận diện rủi ro, đánh giá nguyên nhân và đưa ra phương án xử lý tối ưu nhằm đảm bảo tiến độ và chất lượng công việc</p>
-      <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
-      <span class="skill-pct">80%</span>
+
+    <div class="skill-card sr sd4" data-level="85">
+      <div class="skill-icon-wrap">🧩</div>
+      <div class="skill-name">Problem Solving</div>
+      <div class="skill-desc">Nhận diện chính xác gốc rễ vấn đề và điều phối giải pháp linh hoạt; hóa giải hiệu quả các xung đột đa chiều phát sinh từ hệ thống công nghệ, quy trình vận hành cho đến yếu tố con người.</div>
+      <div class="skill-level-bar"><div class="skill-level-fill"></div></div>
+      <div class="skill-level-label"><span>Analytical Skill</span><span class="pct">85%</span></div>
     </div>
-    <div class="skill-card reveal">
-      <span class="skill-icon"></span>
-      <h3 class="skill-name">Team Coordination</h3>
-      <p class="skill-desc">Tổ chức, phân bổ và điều phối nguồn lực đội nhóm nhằm tối ưu hiệu suất làm việc và hoàn thành mục tiêu dự án</p>
-      <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
-      <span class="skill-pct">90%</span>
+
+    <div class="skill-card sr sd5" data-level="87">
+      <div class="skill-icon-wrap">👥</div>
+      <div class="skill-name">Adaptability & Agility</div>
+      <div class="skill-desc">Khả năng phản ứng nhanh nhạy và giữ vững hiệu suất trước mọi biến số phát sinh; chủ động thích nghi với môi trường và đặc thù nghiệp vụ riêng biệt của từng dự án.</div>
+      <div class="skill-level-bar"><div class="skill-level-fill"></div></div>
+      <div class="skill-level-label"><span>AgileMindset</span><span class="pct">87%</span></div>
     </div>
-    <div class="skill-card reveal">
-      <span class="skill-icon"></span>
-      <h3 class="skill-name">Stakeholder Management</h3>
-      <p class="skill-desc">Xây dựng và duy trì mối quan hệ hiệu quả với khách hàng, đối tác và các bên liên quan.</p>
-      <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
-      <span class="skill-pct">95%</span>
+
+    <div class="skill-card sr sd6" data-level="93">
+      <div class="skill-icon-wrap">🤝</div>
+      <div class="skill-name">Communication & Negotiation</div>
+      <div class="skill-desc">Khả năng giao tiếp linh hoạt và đàm phán tốt để giải quyết mọi vấn đề phát sinh; biết cách lắng nghe, chia sẻ để gắn kết mọi người và giữ gìn các mối quan hệ hợp tác lâu dài..</div>
+      <div class="skill-level-bar"><div class="skill-level-fill"></div></div>
+      <div class="skill-level-label"><span>Relationship Building</span><span class="pct">93%</span></div>
     </div>
   </div>
 </section>
 
-<!-- PROJECTS -->
-<section id="du-an">
-  <div class="section-header reveal">
-    <span class="section-num">03</span>
-    <div class="section-line"></div>
-    <h2 class="section-title">Dự án tiêu biểu</h1>
+<!-- ======================================================
+     PAGE 3 — FEATURED PROJECTS
+     ====================================================== -->
+<section id="projects" class="section section-alt">
+  <div class="section-header sr">
+    <div class="section-label">Featured Projects — 3 Years</div>
+    <h2 class="section-title">Education <span class="accent">Transformation Projects</span></h2>
+    <p class="section-subtitle">Successful digital transformation implementations across universities and colleges nationwide, achieving 100% acceptance and delivery rate.</p>
   </div>
+
   <div class="projects-grid">
-    <div class="project-card reveal">
-      <span class="project-num">Dự án 01</span>
-      <h3 class="project-name">Trường Đại Học Thủy Lợi Hà Hội</h3>
-      <p class="project-desc">Tư vấn giải pháp và quản lý triển khai dự án phần mềm quản lý đào tạo</p>
-      <div class="project-tags">
-        <span class="tag">2026</span>
-        <span class="tag">PM-SC-SI</span>
-        <span class="tag">13B+ VND</span>
-      </div>
-    </div>
-    <div class="project-card reveal">
-      <span class="project-num">Dự án 02</span>
-      <h3 class="project-name">Trường đại học Đông Đô</h3>
-      <p class="project-desc">Quản lý triển khai dự án phần mềm quản trị</p>
-      <div class="project-tags">
-        <span class="tag">2026</span>
-        <span class="tag">PM-SI</span>
-        <span class="tag">1.9B+ VND</span>
-      </div>
-    </div>
-    <div class="project-card reveal">
-      <span class="project-num">Dự án 03</span>
-      <h3 class="project-name">Trường Cao Đẳng Công Nghiệp Hà Nội</h3>
-      <p class="project-desc">Tư vấn giải pháp và quản lý triển khai dự án phần mềm quản lý đào tạo</p>
-      <div class="project-tags">
-        <span class="tag">2025</span>
-        <span class="tag">PM-SC-SI</span>
-        <span class="tag">3.5B+ VND</span>
-      </div>
-    </div>
-    <div class="project-card reveal">
-      <span class="project-num">Dự án 04</span>
-      <h3 class="project-name">Trường Cao Đẳng Công Nghệ Cao Hà Nội</h3>
-      <p class="project-desc">Tư vấn giải pháp và quản lý triển khai dự án phần mềm quản trị nhà trường</p>
-      <div class="project-tags">
-        <span class="tag">2024</span>
-        <span class="tag">PM-SC-SI</span>
-        <span class="tag">3B+ VND</span>
-      </div>
-    </div> 
-     <div class="project-card reveal">
-      <span class="project-num">Dự án 05</span>
-      <h3 class="project-name">Trường Cao Đẳng Công Thương</h3>
-      <p class="project-desc">Quản lý triển khai dự án giai đoạn 02 phần mềm quản trị nhà trường</p>
-      <div class="project-tags">
-        <span class="tag">2024</span>
-        <span class="tag">PM-SC-SI</span>
-        <span class="tag">4B+ VND</span>
-      </div>
-    </div>
-      <div class="project-card reveal">
-      <span class="project-num">Dự án 06</span>
-      <h3 class="project-name">Trường Đại Học Đồng Tháp</h3>
-      <p class="project-desc">Tư vấn giải pháp và quản lý triển khai dự án phần mềm quản trị nhà trường</p>
-      <div class="project-tags">
-        <span class="tag">2024</span>
-        <span class="tag">PM-SC-SI</span>
-        <span class="tag">7B+ VND</span>
-  </div>
+
+    <!-- TLU -->
+  <div class="project-card sr sd9" style="background:linear-gradient(135deg,#1D4ED8,#0F172A);border:1.5px solid rgba(59,130,246,.35)">
+      <div class="project-card-img bg-tlu"
+     style="
+     background-image:
+     linear-gradient(
+        rgba(15,23,42,.55),
+        rgba(15,23,42,.82)
+     ),
+     url('images/project/TLU.jpg');
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     ">
+    <img src="images/project/tlu.webp"
+         alt="TLU Logo"
+         class="project-logo">
 </div>
+      <div class="project-card-body">
+        <div class="project-card-type" style="color:#60A5FA"> Đại học Công lập · Bộ NN &amp; PTNT</div>
+        <div class="project-card-name" style="color:#fff" >Trường Đại học Thủy Lợi Hà Nội</div>
+        <div class="project-card-role" style="color:rgba(255,255,255,.6)">PM Lead &amp; Solution Consultant</div>
+        <div class="project-card-desc" style="color:rgba(255,255,255,.65)">Triển khai hệ thống quản lý đào tạo toàn diện cho một trong những ĐH kỹ thuật công lập lâu đời nhất VN 
+          (thành lập 1959). Quy mô 43 ngành, ~5.350 chỉ tiêu/năm, 2 cơ sở HN và phân hiệu TP.HCM.</div>
+        <div class="project-card-footer">
+          <div class="project-status">Đang thực hiện</div>
+          <div class="project-tags"><span class="project-tag">EDU</span><span class="project-tag">13B+</span><span class="project-tag">2026</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DDO -->
+  <div class="project-card sr sd9" style="background:linear-gradient(135deg,#1D4ED8,#0F172A);border:1.5px solid rgba(59,130,246,.35)">
+      <div class="project-card-img bg-tlu"
+     style="
+     background-image:
+     linear-gradient(
+        rgba(15,23,42,.55),
+        rgba(15,23,42,.82)
+     ),
+     url('images/project/DDU.png');
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     ">
+    <img src="images/project/HDIU.webp"
+         alt="TLU Logo"
+         class="project-logo">
+</div>     
+      <div class="project-card-body">
+        <div class="project-card-type" style="color:#60A5FA" >Đại học Tư thục · Hà Nội</div>
+        <div class="project-card-name" style="color:#fff" >Trường Đại học Đông Đô</div>
+        <div class="project-card-role" style="color:rgba(255,255,255,.6)" >PM Lead &amp; Solution Consultant</div>
+        <div class="project-card-desc" style="color:rgba(255,255,255,.65)" >Số hóa quản lý và chuẩn hóa chuyển đổi dữ lên hệ thống liệu hành chính – đào tạo cho Trường ĐH Đông Đô (thành lập 1994). 
+          Tích hợp quản lý học phí, hồ sơ sinh viên, module giảng viên và cổng sinh viên online.</div>
+        <div class="project-card-footer">
+          <div class="project-status">Đã golive</div>
+          <div class="project-tags"><span class="project-tag">EDU</span><span class="project-tag">2B</span><span class="project-tag">2026</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HNIVC -->
+<div class="project-card sr sd9" style="background:linear-gradient(135deg,#1D4ED8,#0F172A);border:1.5px solid rgba(59,130,246,.35)">
+      <div class="project-card-img bg-tlu"
+     style="
+     background-image:
+     linear-gradient(
+        rgba(15,23,42,.55),
+        rgba(15,23,42,.82)
+     ),
+     url('images/project/HNIVC_B.jpg');
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     ">
+    <img src="images/project/HNIVC.png"
+         alt="TLU Logo"
+         class="project-logo">
+</div>   
+      <div class="project-card-body">
+        <div class="project-card-type" style="color:#60A5FA" >Cao đẳng Nghề · Bộ Công Thương</div>
+        <div class="project-card-name" style="color:#fff" >Trường Cao đẳng Nghề Công nghiệp HN</div>
+        <div class="project-card-role" style="color:rgba(255,255,255,.6)" >PM Lead &amp; Solution Consultant</div>
+        <div class="project-card-desc" style="color:rgba(255,255,255,.65)" >Triển khai hệ thống quản lý đặc thù cho trường nghề với mô hình liên kết quốc tế 1+1+1. 
+          Số hóa quản lý đánh giá năng lực trực tuyến, cán bộ GVCN & CVHT theo dõi năng lực nghề nghiệp từng học sinh và hệ thống dịch vụ công sinh viên online.</div>
+        <div class="project-card-footer">
+          <div class="project-status">Golive & Chờ nghiệm thu</div>
+          <div class="project-tags"><span class="project-tag">EDU</span><span class="project-tag">3B+</span><span class="project-tag">2025</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HTC -->
+    <div class="project-card sr sd4">
+       <div class="project-card-img bg-tlu"
+     style="
+     background-image:
+     linear-gradient(
+        rgba(15,23,42,.55),
+        rgba(15,23,42,.82)
+     ),
+     url('images/project/HHTB.png');
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     ">
+    <img src="images/project/HHT.png"
+         alt="TLU Logo"
+         class="project-logo">
+</div>  
+      <div class="project-card-body">
+        <div class="project-card-type">Cao đẳng Công lập · Hà Nội</div>
+        <div class="project-card-name">Trường Cao đẳng Công Nghệ Cao HN</div>
+        <div class="project-card-role">PM Lead &amp; Solution Consultant</div>
+        <div class="project-card-desc">Triển khai hệ thống phần mềm quản trị toàn diện hành chỉnh tổ chức, tuyển sinh, đào tạo, công tác sinh viên, tài chính, tài sản cơ sở vật chất, ký túc xá...</div>
+        <div class="project-card-footer">
+          <div class="project-status">Nghiệm thu thành công</div>
+          <div class="project-tags"><span class="project-tag">EDU</span><span class="project-tag">HRM</span><span class="project-tag">3B+</span><span class="project-tag">2024</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTG -->
+    <div class="project-card sr sd4">
+       <div class="project-card-img bg-tlu"
+     style="
+     background-image:
+     linear-gradient(
+        rgba(15,23,42,.55),
+        rgba(15,23,42,.82)
+     ),
+     url('images/project/HITUB.jpg');
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     ">
+    <img src="images/project/HITU.png"
+         alt="TLU Logo"
+         class="project-logo">
+</div>  
+      <div class="project-card-body">
+        <div class="project-card-type">Cao đẳng Công lập · Bộ Công Thương</div>
+        <div class="project-card-name">Trường Cao đẳng Công Thương TP.HCM</div>
+        <div class="project-card-role">Project Manager</div>
+        <div class="project-card-desc">Triển khai giai đoạn 02 hệ thống phần mềm quản trị toàn diện nhà trường.</div>
+        <div class="project-card-footer">
+          <div class="project-status">Nghiệm thu thành công</div>
+          <div class="project-tags"><span class="project-tag">EDU</span><span class="project-tag">4B+</span><span class="project-tag">2024</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DTH -->
+    <div class="project-card sr sd4">
+       <div class="project-card-img bg-tlu"
+     style="
+     background-image:
+     linear-gradient(
+        rgba(15,23,42,.55),
+        rgba(15,23,42,.82)
+     ),
+     url('images/project/DTHUB.jpg');
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     ">
+    <img src="images/project/DTHU.png"
+         alt="TLU Logo"
+         class="project-logo">
+</div>  
+      <div class="project-card-body">
+        <div class="project-card-type">Đại học Công lập · Đồng Tháp</div>
+        <div class="project-card-name">Trường Đại học Đồng Tháp</div>
+        <div class="project-card-role">Project Manager</div>
+        <div class="project-card-desc">Triển khai hệ thống quản trị toàn diện đa điểm đào tạo cho ĐH Đồng Tháp — hơn 12.000 SV chính quy, 60 cơ sở liên kết toàn quốc. Đồng bộ dữ liệu 11 ngành đào tạo từ xa và chuẩn hóa báo cáo Bộ GD&amp;ĐT.</div>
+        <div class="project-card-footer">
+          <div class="project-status">Nghiệm thu thành công</div>
+          <div class="project-tags"><span class="project-tag">EDU</span><span class="project-tag">7B+</span><span class="project-tag">2023</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SGT -->
+    <div class="project-card sr sd4">
+       <div class="project-card-img bg-tlu"
+     style="
+     background-image:
+     linear-gradient(
+        rgba(15,23,42,.55),
+        rgba(15,23,42,.82)
+     ),
+     url('images/project/STHCB.jpg');
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     ">
+    <img src="images/project/STHC.webp"
+         alt="TLU Logo"
+         class="project-logo">
+</div>  
+      <div class="project-card-body">
+        <div class="project-card-type">Trung cấp · Saigontourist Group</div>
+        <div class="project-card-name">Trung cấp Du lịch &amp; Khách sạn Saigontourist</div>
+        <div class="project-card-role">PM Lead &amp; Solution Consultant</div>
+        <div class="project-card-desc">Triển khai hệ thống quản lý chuyên biệt cho trường trực thuộc Tập đoàn Saigontourist. Quản lý thực hành tại nhà hàng/khách sạn thực tế, quản lý đặc thù cho công tác đào tạo dịch vụ.</div>
+        <div class="project-card-footer">
+          <div class="project-status">Nghiệm thu thành công</div>
+          <div class="project-tags"><span class="project-tag">EDU</span><span class="project-tag">2.5B+</span><span class="project-tag">2023</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BVU -->
+    <div class="project-card sr sd4">
+       <div class="project-card-img bg-tlu"
+     style="
+     background-image:
+     linear-gradient(
+        rgba(15,23,42,.55),
+        rgba(15,23,42,.82)
+     ),
+     url('images/project/BVUB.jpg');
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     ">
+    <img src="images/project/BVU.png"
+         alt="TLU Logo"
+         class="project-logo">
+</div>  
+      <div class="project-card-body">
+        <div class="project-card-type">Đại học Tư thục · Tập đoàn Nguyễn Hoàng</div>
+        <div class="project-card-name">Trường Đại học Bà Rịa – Vũng Tàu</div>
+        <div class="project-card-role">Project Manager &amp; Deployment</div>
+        <div class="project-card-desc">Triển khai nâng cấp hệ thống cho BVU — đại học đạt QS Stars 4 Sao (2021, trẻ nhất VN). 95 ngành/chương trình, tích hợp đa ngôn ngữ và chuẩn báo cáo QS. Thiết kế scale lên 15.000 SV.</div>
+        <div class="project-card-footer">
+          <div class="project-status">Nghiệm thu thành công</div>
+          <div class="project-tags"><span class="project-tag">EDU</span><span class="project-tag">2B+</span><span class="project-tag">2023</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MORE -->
+    <div class="project-card sr sd4">
+       <div class="project-card-img bg-tlu"
+     style="
+     background-image:
+     linear-gradient(
+        rgba(15,23,42,.55),
+        rgba(15,23,42,.82)
+     ),
+     url('images/project/UniB.webp');
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     ">
+    <img src="images/project/Uni.jpg"
+         alt="TLU Logo"
+         class="project-logo">
+</div>  
+      <div class="project-card-body">
+        <div class="project-card-type" >Trường ĐH - CĐ khác</div>
+        <div class="project-card-name" >Triển khai nhiều trường CĐ - ĐH khác</div>
+        <div class="project-card-role" >Deployment</div>
+        <div class="project-card-desc" >Thành viên dự án, phụ trách trực tiếp nhiều phân hệ module, tham vào công tác tư vấn giải pháp và triển khai : IUH, NTT, FBU, VAA, CTUET, UFBA...</div>
+          <div class="project-status">Hoàn thành</div>
+          <div class="project-tags"><span class="project-tag">All Vietnam</span><span class="project-tag">10B+</span><span class="project-tag">2022</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- CONTACT -->
-<section id="lien-he">
-  <div class="section-header reveal">
-    <span class="section-num">04</span>
-    <div class="section-line"></div>
-    <h2 class="section-title">Liên hệ</h2>
+<!-- ======================================================
+     PAGE 4 — EDUCATION & ACHIEVEMENTS
+     ====================================================== -->
+<section id="education" class="section-dark">
+  <div class="inner" style="padding:100px 0">
+    <div class="section-header sr">
+      <div class="section-label" style="color:var(--blue-light)">Track Record &amp; Background</div>
+      <h2 class="section-title light">Key Achievements &amp; <span class="accent">Education</span></h2>
+    </div>
+
+    <div class="edu-layout">
+      <!-- LEFT: Achievements -->
+      <div>
+        <div class="section-label" style="color:var(--blue-light);margin-bottom:24px">
+          <span>🏆 Key Achievements</span>
+        </div>
+        <div class="achievement-list">
+          <div class="achievement-card sr sd1">
+            <div class="ach-icon">⏱️</div>
+            <div>
+              <div class="ach-number">8 years of experience</div>
+              <div class="ach-text">Hoạt động trong lĩnh vực triển khai hệ thống quản lý giáo dục 
+                toàn diện cho các trường cao đẳng, đại học trên khắp Việt Nam.</div>
+            </div>
+          </div>
+          <div class="achievement-card sr sd2">
+            <div class="ach-icon">🎯</div>
+            <div>
+              <div class="ach-number">4 years of experience</div>
+              <div class="ach-text"> Đảm nhiệm vai trò Quản lý triển khai dự án và Tư vấn giải pháp cho các dự án quy mô lớn, 
+                dẫn dắt các nhóm đạt được mục tiêu hoàn thành đúng thời hạn.</div>
+            </div>
+          </div>
+          <div class="achievement-card sr sd3">
+            <div class="ach-icon">💰</div>
+            <div>
+              <div class="ach-number">100% · 20B+ VND</div>
+              <div class="ach-text">Đạt tỷ lệ bàn giao, golive và nghiệm thu dự án thành công 100% trong 4 năm qua, đóng góp hơn 20 tỷ VND giá trị kinh doanh cho công ty.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Education Timeline -->
+      <div>
+        <div class="section-label" style="color:var(--blue-light);margin-bottom:24px">
+          <span>🎓 Education &amp; Certifications</span>
+        </div>
+        <div class="edu-timeline sr">
+          <div class="edu-item">
+            <div class="edu-period">In Progress — Present</div>
+            <div class="edu-degree">Master's Degree in Information Technology</div>
+            <div class="edu-school">Research-oriented program </div>
+            <div class="edu-note edu-note-gray">🎓 In Progress</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-period">Completed</div>
+            <div class="edu-degree">Engineer Degree in Information Technology</div>
+            <div class="edu-note">✨ Graduated with Distinction</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-period">Professional Certification</div>
+            <div class="edu-degree">System Analysis Certification</div>
+            <div class="edu-school">Professional Development · CNTT</div>
+            <div class="edu-note">✨ Graduated with Distinction</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-period">Professional Certification</div>
+            <div class="edu-degree">Teaching Methodology — Vocational College Level</div>
+            <div class="edu-school">Bộ GD&amp;ĐT · Pedagogy Certificate</div>
+            <div class="edu-note">✨ Graduated with Distinction</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-period">Language Certification</div>
+            <div class="edu-degree">VSTEP English Certificate — Level 3 (B1)</div>
+            <div class="edu-school">Vietnam Standardized Test of English Proficiency</div>
+            <div class="edu-note edu-note-gray">🌐 B1 Certified</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-period">Continuous Learning</div>
+            <div class="edu-degree">Multiple Professional Development Courses</div>
+            <div class="edu-school">Project Management, Agile, EdTech &amp; Leadership</div>
+            <div class="edu-note edu-note-gray">📚 Ongoing</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
+
+<!-- ======================================================
+     PAGE 5 — PASSIONS
+     ====================================================== -->
+<section id="passions" class="section">
+  <div class="section-header sr">
+    <div class="section-label">Beyond Technology</div>
+    <h2 class="section-title">Passions &amp; <span class="accent">Lifestyle</span></h2>
+    <p class="section-subtitle">Discipline in sports mirrors discipline in work. Every milestone — whether a 100km trail or a complex project — is built on consistency perseverance and discipline.</p>
+  </div>
+
+  <div class="passions-grid">
+
+    <!-- Running -->
+ <div class="passion-card sr sd1">
+    <div class="passion-bg passion-run">
+        <div style="
+            position:absolute;
+            inset:0;
+            background:
+            linear-gradient(
+                rgba(15,23,42,.35),
+                rgba(15,23,42,.75)
+            ),
+            url('images/lifestyle/road.jpg')
+            center/cover no-repeat;
+        "></div>
+    </div>
+    <div class="passion-bg-layer"></div>
+    <div class="passion-overlay"></div>
+    <div class="passion-content">
+        <span class="passion-emoji">🏃</span>
+        <div class="passion-title">
+            Road Running
+        </div>
+        <div class="passion-sub">
+            7 lần hoàn thành cự ly Marathon 42,195km đã dạy tôi
+            Thành công không đến từ ngày thi đấu mà được xây dựng trong quá trình luyện tập hàng ngày đầy gian truân.
+        </div>
+        <div class="passion-pills">
+            <span class="passion-pill">7× Marathon</span>
+            <span class="passion-pill">42.195km</span>
+            <span class="passion-pill">Run</span>
+        </div>
+    </div>
+</div>
+    <!-- Trail -->
+ <div class="passion-card sr sd1">
+    <div class="passion-bg passion-run">
+        <div style="
+            position:absolute;
+            inset:0;
+            background:
+            linear-gradient(
+                rgba(15,23,42,.35),
+                rgba(15,23,42,.75)
+            ),
+            url('images/lifestyle/TrailVMM.jpg')
+            center/cover no-repeat;
+        "></div>
+      </div>
+      <div class="passion-bg-layer"></div>
+      <div class="passion-overlay"></div>
+      <div class="passion-content">
+        <span class="passion-emoji">⛰️</span>
+        <div class="passion-title">Ultra Trail Running</div>
+        <div class="passion-sub">3 lần hoàn thành cự ly Ultra Trail 100km. Bài học quý giá cho công việc và cuộc sống thử thách 
+          đừng bao giờ nhìn chằm chằm vào ngọn núi hay cả quãng đường, 
+          hãy lên kế hoạch tập trung hoàn thành từng bước tiếp theo. Đó cũng là cách để chinh phục những dự án phức tạp.</div>
+        <div class="passion-pills">
+          <span class="passion-pill">3× 100KM ✓</span>
+          <span class="passion-pill">VMM</span>
+          <span class="passion-pill">DLUT</span>
+          <span class="passion-pill">LAAN</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fitness -->
+ <div class="passion-card sr sd1">
+    <div class="passion-bg passion-run">
+        <div style="
+            position:absolute;
+            inset:0;
+            background:
+            linear-gradient(
+                rgba(15,23,42,.35),
+                rgba(15,23,42,.75)
+            ),
+            url('images/lifestyle/gym.jpg')
+            center/cover no-repeat;
+        "></div>
+      </div>
+      <div class="passion-bg-layer"></div>
+      <div class="passion-overlay"></div>
+      <div class="passion-content">
+        <span class="passion-emoji">💪</span>
+        <div class="passion-title">Strength &amp; Fitness</div>
+        <div class="passion-sub">10 năm duy trì tập luyện. Kỷ lục cá nhân Squat 150kg, Bench Press 120kg, Deadlift 200kg. 
+          Sức khỏe luôn là nền tảng giúp mọi thứ khác có thể bắt đầu và trở nên khả thi.</div>
+        <div class="passion-pills">
+          <span class="passion-pill">10+ Years</span>
+          <span class="passion-pill">Squat 150kg</span>
+          <span class="passion-pill">Deadlift 200kg</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     PAGE 6 — CONTACT
+     ====================================================== -->
+<section id="contact" class="section section-alt">
+  <div class="section-header sr">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Let's Build Something <span class="accent">Great Together</span></h2>
+  </div>
+
   <div class="contact-layout">
-    <div class="reveal">
-      <p class="contact-tagline">"Sẵn sàng học hỏi và đóng góp cho những dự án thú vị."</p>
-      <div style="margin-top:40px;display:flex;flex-direction:column;gap:16px;">
-        <div>
-          <p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px;">Email</p>
-          <p style="font-size:15px;color:white;">hpminhhien@gmail.com</p>
-        </div>
-        <div>
-          <p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px;">Điện thoại</p>
-          <p style="font-size:15px;color:white;">0983734882</p>
-        </div>
-        <div>
-          <p style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px;">Địa chỉ</p>
-          <p style="font-size:15px;color:white;">Tp.Hồ Chí Minh</p>
+    <!-- LEFT: Visual -->
+    <div class="sr sr-left">
+      <div class="contact-visual">
+        <div class="cv-inner">
+          <div class="contact-avatar">
+            <img src="images/hienasc.jpg" alt="Phạm Minh Hiển" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+            <span style="display:none">🧑‍💼</span>
+          </div>
+          <div class="contact-name">Phạm Minh Hiển</div>
+          <div class="contact-tagline">Project Manager &amp; Solution Consultant · Ho Chi Minh City</div>
+          <blockquote class="contact-final-quote">
+            "Let's build something great together."
+          </blockquote>
+          <p style="font-size:.85rem;color:rgba(255,255,255,.75);line-height:1.75;margin-bottom:24px">
+            I am always open to discussing:<br>
+            · Digital transformation projects in education<br>
+            · An opportunity to grow together<br>
+            · Strategic partnerships<br>
+            · Or simply sharing a meaningful running or work out session together.
+          </p>
+          <div class="contact-socials">
+            <a class="social-btn" href="https://facebook.com" target="_blank" title="Facebook">📘</a>
+            <a class="social-btn" href="https://linkedin.com" target="_blank" title="LinkedIn">💼</a>
+            <a class="social-btn" href="https://zalo.me/0983734882" target="_blank" title="Zalo">💬</a>
+          </div>
         </div>
       </div>
     </div>
-    <div class="contact-form reveal">
-      <div class="form-group">
-        <label class="form-label">Họ tên</label>
-        <input type="text" class="form-input" placeholder="Phạm Minh Hiển">
+
+    <!-- RIGHT: Form + Info -->
+    <div class="sr sr-right">
+      <div class="contact-title">Contact Information</div>
+      <p class="contact-intro">Ready to learn, contribute to exciting projects.</p>
+
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="ci-icon">📱</div>
+          <div><div class="ci-label">Phone / Zalo</div><div class="ci-value">0983 734 882</div></div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">✉️</div>
+          <div><div class="ci-label">Email</div><div class="ci-value">hpminhhien@gmail.com</div></div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">📍</div>
+          <div><div class="ci-label">Location</div><div class="ci-value">Ho Chi Minh City, Vietnam</div></div>
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input type="email" class="form-input" placeholder="email@example.com">
+
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input class="form-input" type="text" placeholder="Your name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" placeholder="your@email.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <input class="form-input" type="text" placeholder="Project inquiry / Consulting / Partnership...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Tell me about your project or idea..."></textarea>
+        </div>
+        <button class="form-submit">✉ Send Message</button>
       </div>
-      <div class="form-group">
-        <label class="form-label">Tin nhắn</label>
-        <textarea class="form-textarea" placeholder="Xin chào, tôi muốn trao đổi về..."></textarea>
-      </div>
-      <button class="btn-send" onclick="alert('Cảm ơn! Tôi sẽ phản hồi sớm nhất có thể.')">Gửi tin nhắn</button>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ======================================================
+     FOOTER
+     ====================================================== -->
 <footer>
-  <span>© 2026 Phạm Minh Hiển.</span>
+  <div class="footer-brand">PMH<span>.dev</span></div>
+  <div class="footer-copy">© 2026 Built with -  Phạm Minh Hiển in Ho Chi Minh City</div>
   <div class="footer-links">
-    <a href="#gioi-thieu">Giới thiệu</a>
-    <a href="#ky-nang">Kỹ năng</a>
-    <a href="#du-an">Dự án</a>
+    <a href="#hero">Home</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
   </div>
 </footer>
 
+<!-- ======================================================
+     JAVASCRIPT
+     ====================================================== -->
 <script>
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+/* ── CURSOR ── */
+const dot = document.getElementById('cDot'), ring = document.getElementById('cRing');
+let mx=0, my=0, rx=0, ry=0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+});
+(function tick() {
+  rx += (mx - rx) * .14; ry += (my - ry) * .14;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(tick);
+})();
+document.querySelectorAll('a, button, .skill-card, .project-card, .passion-card, .contact-item, .achievement-card').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
+});
+
+/* ── NAV SCROLL SPY ── */
+const navbar = document.getElementById('navbar');
+const sections = document.querySelectorAll('section,[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+  let current = '';
+  document.querySelectorAll('section').forEach(s => {
+    if (window.scrollY >= s.offsetTop - 140) current = s.id;
+  });
+  navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current));
+}, { passive: true });
+
+/* ── SMOOTH SCROLL ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+
+/* ── SCROLL REVEAL ── */
+const srEls = document.querySelectorAll('.sr, .sr-left, .sr-right');
+const srObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.1 });
+srEls.forEach(el => srObs.observe(el));
+
+/* ── SKILL BAR ANIMATION ── */
+const skillObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const fill = e.target.querySelector('.skill-level-fill');
+      const level = e.target.dataset.level;
+      if (fill && level) setTimeout(() => fill.style.width = level + '%', 200);
     }
   });
-}, { threshold: 0.1 });
+}, { threshold: 0.3 });
+document.querySelectorAll('.skill-card[data-level]').forEach(el => skillObs.observe(el));
 
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+/* ── HERO PARTICLES ── */
+const pContainer = document.getElementById('particles');
+if (pContainer) {
+  for (let i = 0; i < 30; i++) {
+    const s = document.createElement('span');
+    s.style.cssText = `
+      left:${Math.random()*100}%;top:${Math.random()*100}%;
+      animation-delay:${Math.random()*8}s;
+      animation-duration:${6+Math.random()*6}s;
+      opacity:${0.3+Math.random()*0.5};
+      width:${1+Math.random()*3}px;height:${1+Math.random()*3}px;
+    `;
+    pContainer.appendChild(s);
+  }
+}
+
+/* ── AVATAR IMAGE FALLBACK ── */
+const avatarImg = new Image();
+avatarImg.src = 'images/avatar.jpg';
+avatarImg.onload = () => {
+  const c = document.getElementById('avatarContent');
+  if (c) { c.innerHTML = ''; const img = document.createElement('img'); img.src='images/avatar.jpg'; img.alt='Phạm Minh Hiển'; img.style.cssText='width:100%;height:100%;object-fit:cover'; c.appendChild(img); }
+};
 </script>
 </body>
 </html>
