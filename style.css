@@ -415,6 +415,63 @@ img { display: block; max-width: 100%; }
   .avatar-badge      { display: none; }
 }
 
+/* ── HERO LAYOUT ── */
+#hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 100px 8vw 60px;
+}
+
+/* ── AVATAR CONTAINER ── */
+.hero-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  position: relative;
+  opacity: 0;
+  animation: fadeIn .8s ease .5s forwards;
+}
+
+.avatar-container {
+  position: relative;
+  width: 420px;
+  height: 520px;
+}
+
+/* Avatar frame — wrapper bao quanh ảnh */
+.avatar-frame {
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  overflow: hidden;
+  position: relative;
+  border: 1.5px solid rgba(59,130,246,.25);
+  box-shadow: 0 32px 80px rgba(0,0,0,.4);
+}
+
+/* Ảnh bên trong frame */
+.profile-image {
+  width: 100%;
+  height: 100%;
+}
+
+.profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top; /* Ưu tiên hiển thị mặt */
+  border-radius: 30px;
+  display: block;
+}
+
+/* Badges vị trí */
+.ab-top-right  { top: 16px; right: -52px; }
+.ab-bottom-left{ bottom: 32px; left: -56px; }
+.ab-top-left   { top: 56px; left: -60px; }
+
+
 /* ============================================================
    RESPONSIVE — Tablet (≤1024px)
    ============================================================ */
@@ -424,25 +481,30 @@ img { display: block; max-width: 100%; }
     grid-template-rows: auto auto;
     padding: 100px 6vw 60px;
   }
+
   /* Ảnh lên trên, text xuống dưới */
   .hero-right {
     display: flex;                   /* Hiện lại — không ẩn nữa */
     order: -1;                       /* Đẩy lên trên text */
     margin-bottom: 40px;
   }
+
   .hero-left {
     padding-right: 0;
     order: 1;
   }
+
   .avatar-container {
     width: 300px;
     height: 370px;
   }
+
   /* Badges thu vào trong trên tablet */
   .ab-top-right  { right: -12px; top: 12px; }
   .ab-bottom-left{ left: -12px; bottom: 20px; }
   .ab-top-left   { left: -12px; top: 48px; }
 }
+
 
 /* ============================================================
    RESPONSIVE — Mobile (≤640px)
@@ -451,26 +513,32 @@ img { display: block; max-width: 100%; }
   #hero {
     padding: 88px 5vw 48px;
   }
+
   .hero-right {
     display: flex;                   /* Vẫn hiển thị */
     margin-bottom: 32px;
   }
+
   .avatar-container {
     width: 220px;                    /* Thu nhỏ vừa mobile */
     height: 270px;
   }
+
   /* Tắt ring animation trên mobile — tiết kiệm CPU */
   .avatar-ring-outer,
   .avatar-ring-inner {
     display: none;
   }
+
   /* Ẩn badges trên mobile nhỏ — tránh tràn màn hình */
   .avatar-badge {
     display: none;
   }
+
   .hero-name {
     font-size: clamp(2rem, 8vw, 3rem);
   }
+
   .hero-stats {
     gap: 20px;
     flex-wrap: wrap;
