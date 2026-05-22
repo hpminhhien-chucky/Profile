@@ -293,27 +293,188 @@ img { display: block; max-width: 100%; }
 }
 .hero-stat-lbl { font-size: .75rem; color: var(--gray-light); margin-top: 4px; letter-spacing: .05em; }
 
-/* RIGHT SIDE - AVATAR */
+/* ── HERO RIGHT — AVATAR ── */
 .hero-right {
-  display: flex; align-items: center; justify-content: center;
-  z-index: 2; position: relative;
-  opacity: 0; animation: fadeIn .8s ease .5s forwards;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  position: relative;
+  opacity: 0;
+  animation: fadeIn .8s ease .5s forwards;
 }
-.avatar-container { position: relative; width: 420px; height: 520px; 
-    position: relative;
-    overflow: visible;
-    
+
+/* Xóa khai báo trùng — chỉ giữ 1 */
+.avatar-container {
+  position: relative;
+  width: 420px;
+  height: 520px;
+  overflow: visible; /* badges có thể nhô ra ngoài */
 }
-    
-.profile-image img{
-    width: 420px;
-    height: 520px;
-    object-fit: cover;
-    border-radius: 30px;
-    transform: scale(1.08);
-    transition: 0.4s ease;
-    position: relative;
-    z-index: 1;
+
+/* Bỏ border + box-shadow — chỉ giữ layout */
+.avatar-frame {
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  overflow: hidden;   /* cắt ảnh theo bo góc */
+  position: relative;
+  /* border: none; */
+  /* box-shadow: none; */
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+}
+
+.profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+/* Badges */
+.avatar-badge {
+  position: absolute;
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 8px;
+  padding: 10px 16px;
+  white-space: nowrap;
+  z-index: 10;
+}
+.ab-top-right   { top: 16px;    right: -52px; }
+.ab-bottom-left { bottom: 32px; left: -56px;  }
+.ab-top-left    { top: 56px;    left: -60px;  }
+.ab-label { font-size: .7rem;  color: rgba(148,163,184,.8); margin-bottom: 2px; }
+.ab-value { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: .95rem; color: #fff; }
+
+/* Rotating rings — hiệu ứng */
+.avatar-ring-outer {
+  position: absolute;
+  inset: -24px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(59,130,246,.2);
+  animation: spin 30s linear infinite;
+  pointer-events: none;
+}
+.avatar-ring-outer::before {
+  content: '';
+  position: absolute; top: -4px; left: 50%;
+  transform: translateX(-50%);
+  width: 10px; height: 10px;
+  background: var(--blue); border-radius: 50%;
+  box-shadow: 0 0 16px var(--blue);
+}
+.avatar-ring-inner {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px dashed rgba(59,130,246,.15);
+  animation: spin 20s linear infinite reverse;
+  pointer-events: none;
+}
+@keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+
+/* ── TABLET ≤1024px ── */
+@media (max-width: 1024px) {
+  #hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    padding: 100px 6vw 60px;
+  }
+  .hero-right {
+    order: -1;
+    margin-bottom: 40px;
+  }
+  .hero-left {
+    padding-right: 0;
+    order: 1;
+  }
+  .avatar-container {
+    width: 300px;
+    height: 370px;
+  }
+  .ab-top-right   { right: -12px; top: 12px;  }
+  .ab-bottom-left { left: -12px;  bottom: 20px; }
+  .ab-top-left    { left: -12px;  top: 48px;  }
+}
+
+/* ── MOBILE ≤640px ── */
+@media (max-width: 640px) {
+  .avatar-container {
+    width: 220px;
+    height: 270px;
+  }
+  .avatar-ring-outer,
+  .avatar-ring-inner { display: none; }
+  .avatar-badge      { display: none; }
+}
+
+/* ============================================================
+   RESPONSIVE — Tablet (≤1024px)
+   ============================================================ */
+@media (max-width: 1024px) {
+  #hero {
+    grid-template-columns: 1fr;      /* 1 cột */
+    grid-template-rows: auto auto;
+    padding: 100px 6vw 60px;
+  }
+  /* Ảnh lên trên, text xuống dưới */
+  .hero-right {
+    display: flex;                   /* Hiện lại — không ẩn nữa */
+    order: -1;                       /* Đẩy lên trên text */
+    margin-bottom: 40px;
+  }
+  .hero-left {
+    padding-right: 0;
+    order: 1;
+  }
+  .avatar-container {
+    width: 300px;
+    height: 370px;
+  }
+  /* Badges thu vào trong trên tablet */
+  .ab-top-right  { right: -12px; top: 12px; }
+  .ab-bottom-left{ left: -12px; bottom: 20px; }
+  .ab-top-left   { left: -12px; top: 48px; }
+}
+
+/* ============================================================
+   RESPONSIVE — Mobile (≤640px)
+   ============================================================ */
+@media (max-width: 640px) {
+  #hero {
+    padding: 88px 5vw 48px;
+  }
+  .hero-right {
+    display: flex;                   /* Vẫn hiển thị */
+    margin-bottom: 32px;
+  }
+  .avatar-container {
+    width: 220px;                    /* Thu nhỏ vừa mobile */
+    height: 270px;
+  }
+  /* Tắt ring animation trên mobile — tiết kiệm CPU */
+  .avatar-ring-outer,
+  .avatar-ring-inner {
+    display: none;
+  }
+  /* Ẩn badges trên mobile nhỏ — tránh tràn màn hình */
+  .avatar-badge {
+    display: none;
+  }
+  .hero-name {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+  .hero-stats {
+    gap: 20px;
+    flex-wrap: wrap;
+  }
 }
 /* Rotating ring */
 .avatar-ring-outer {
