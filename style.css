@@ -293,48 +293,6 @@ img { display: block; max-width: 100%; }
 }
 .hero-stat-lbl { font-size: .75rem; color: var(--gray-light); margin-top: 4px; letter-spacing: .05em; }
 
-/* ── HERO RIGHT — AVATAR ── */
-.hero-right {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  position: relative;
-  opacity: 0;
-  animation: fadeIn .8s ease .5s forwards;
-}
-
-/* Xóa khai báo trùng — chỉ giữ 1 */
-.avatar-container {
-  position: relative;
-  width: 420px;
-  height: 520px;
-  overflow: visible; /* badges có thể nhô ra ngoài */
-}
-
-/* Bỏ border + box-shadow — chỉ giữ layout */
-.avatar-frame {
-  width: 100%;
-  height: 100%;
-  border-radius: 30px;
-  overflow: hidden;   /* cắt ảnh theo bo góc */
-  position: relative;
-  /* border: none; */
-  /* box-shadow: none; */
-}
-
-.profile-image {
-  width: 100%;
-  height: 100%;
-}
-
-.profile-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-}
 
 /* Badges */
 .avatar-badge {
@@ -356,9 +314,11 @@ img { display: block; max-width: 100%; }
 /* Rotating rings — hiệu ứng */
 .avatar-ring-outer {
   position: absolute;
-  inset: -24px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(59,130,246,.2);
+  inset: -60px !important; /* Thêm !important để ép trình duyệt nhận giá trị này */
+  width: auto !important;   /* Reset lại width */
+  height: auto !important;  /* Reset lại height */
+  border-radius: 100%;
+  border: 2px solid rgba(59,130,246,.2);
   animation: spin 30s linear infinite;
   pointer-events: none;
 }
@@ -366,15 +326,17 @@ img { display: block; max-width: 100%; }
   content: '';
   position: absolute; top: -4px; left: 50%;
   transform: translateX(-50%);
-  width: 10px; height: 10px;
+  width: 10px; height: 14px;
   background: var(--blue); border-radius: 50%;
   box-shadow: 0 0 16px var(--blue);
 }
 .avatar-ring-inner {
   position: absolute;
-  inset: -8px;
-  border-radius: 50%;
-  border: 1px dashed rgba(59,130,246,.15);
+  inset: -30px !important; /* Thêm !important */
+  width: auto !important;
+  height: auto !important;
+  border-radius: 100%;
+  border: 1.5px dashed rgba(59,130,246,.15);
   animation: spin 20s linear infinite reverse;
   pointer-events: none;
 }
@@ -440,10 +402,7 @@ img { display: block; max-width: 100%; }
     margin-bottom: 32px;
   }
 
-  .avatar-container {
-    width: 240px;                    /* Tăng nhẹ từ 220px lên 240px cho ảnh rõ hơn */
-    height: 300px;
-  }
+
 
   /* Ẩn triệt để toàn bộ ring và badges gây tràn viền trên mobile */
   .avatar-ring-outer,
@@ -487,24 +446,24 @@ img { display: block; max-width: 100%; }
 
 /* Avatar frame — wrapper bao quanh ảnh */
 .avatar-frame {
-  width: 100%;
-  height: 100%;
-  border-radius: 30px;
+  width: 180%;
+  height: 180%;
+  border-radius: 50px;
   overflow: hidden;
   position: relative;
-  border: 1.5px solid rgba(59,130,246,.25);
+  border: 2.0px solid rgba(59,130,246,.25);
   box-shadow: 0 32px 80px rgba(0,0,0,.4);
 }
 
 /* Ảnh bên trong frame */
 .profile-image {
-  width: 100%;
-  height: 100%;
+  width: 150%;
+  height: 120%;
 }
 
 .profile-image img {
-  width: 100%;
-  height: 100%;
+  width: 150%;
+  height: 120%;
   object-fit: cover;
   object-position: center top; /* Ưu tiên hiển thị mặt */
   border-radius: 30px;
@@ -539,10 +498,7 @@ img { display: block; max-width: 100%; }
     order: 1;
   }
 
-  .avatar-container {
-    width: 300px;
-    height: 370px;
-  }
+ 
 
   /* Badges thu vào trong trên tablet */
   .ab-top-right  { right: -12px; top: 12px; }
@@ -564,10 +520,7 @@ img { display: block; max-width: 100%; }
     margin-bottom: 32px;
   }
 
-  .avatar-container {
-    width: 220px;                    /* Thu nhỏ vừa mobile */
-    height: 270px;
-  }
+  
 
   /* Tắt ring animation trên mobile — tiết kiệm CPU */
   .avatar-ring-outer,
