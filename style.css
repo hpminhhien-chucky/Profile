@@ -498,7 +498,84 @@ img { display: block; max-width: 100%; }
     order: 1;
   }
 
- 
+ .hero-left {
+  padding-right: 48px;
+  z-index: 2;
+}
+
+/* ============================================================
+   RESPONSIVE — Áp dụng khi lên Mobile/Tablet (≤1024px)
+   ============================================================ */
+@media (max-width: 1024px) {
+  .hero-left {
+    padding-right: 0 !important; /* Xóa khoảng trống bên phải để không bị lệch */
+    order: 1;                     /* Giữ chữ nằm dưới ảnh */
+    
+    /* Căn giữa toàn bộ text và các khối con bên trong */
+    text-align: center !important; 
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important; 
+    justify-content: center !important;
+  }
+
+  /* Đảm bảo các khối chứa nút bấm hoặc badge bên trong (.hero-left) cũng được đưa ra giữa */
+  .hero-left .cta-buttons, 
+  .hero-left .hero-stats,
+  .hero-left div {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-wrap: wrap !important; /* Tránh tràn viền trên mobile nhỏ */
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+
+/* ============================================================
+   ROTATING RINGS — HIỆU ỨNG BIẾN DẠNG (GIỮ NGUYÊN TỪ ĐOẠN TRƯỚC)
+   ============================================================ */
+.avatar-ring-outer {
+  position: absolute;
+  inset: -60px !important; 
+  width: auto !important;   
+  height: auto !important;  
+  border-radius: 100%;
+  border: 2px solid rgba(59,130,246,.2);
+  pointer-events: none;
+  animation: spin-ellipse-outer 30s linear infinite;
+}
+
+.avatar-ring-outer::before {
+  content: '';
+  position: absolute; top: -7px; left: 50%;
+  transform: translateX(-50%);
+  width: 12px; height: 12px;
+  background: var(--blue); border-radius: 50%;
+  box-shadow: 0 0 16px var(--blue);
+}
+
+.avatar-ring-inner {
+  position: absolute;
+  inset: -30px !important; 
+  width: auto !important;
+  height: auto !important;
+  border-radius: 100%;
+  border: 1.5px dashed rgba(59,130,246,.15);
+  pointer-events: none;
+  animation: spin-ellipse-inner 20s linear infinite reverse;
+}
+
+@keyframes spin-ellipse-outer {
+  from { transform: scale(0.8, 1.2) rotate(0deg); }
+  to { transform: scale(0.8, 1.2) rotate(360deg); }
+}
+
+@keyframes spin-ellipse-inner {
+  from { transform: scale(0.8, 1.2) rotate(0deg); }
+  to { transform: scale(0.8, 1.2) rotate(360deg); }
+}
 
   /* Badges thu vào trong trên tablet */
   .ab-top-right  { right: -12px; top: 12px; }
